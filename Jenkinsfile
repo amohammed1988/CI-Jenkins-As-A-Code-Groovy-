@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
         maven "MAVEN3"
-        jdk "Java11" // Update this to the appropriate Java version
+        jdk "OracleJDK8" // Update this to the appropriate Java version
     }
     
     environment {
