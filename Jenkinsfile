@@ -58,8 +58,8 @@ pipeline {
                 catchError {
                     withSonarQubeEnv("${SONARSERVER}") {
                         sh """${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectKey=CI-Jenkins-As-A-Code-Groovy \
-                            -Dsonar.projectName=CI-Jenkins-As-A-Code-Groovy \
+                            -Dsonar.projectKey=vprofile \
+                            -Dsonar.projectName=vprofile \
                             -Dsonar.projectVersion=1.0 \
                             -Dsonar.sources=src/ \
                             -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
