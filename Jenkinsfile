@@ -22,7 +22,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'mvn -s settings.xml -DskipTests install'
+                catchError {
+                    sh 'mvn -s settings.xml -DskipTests install'
+                }
             }
             post {
                 success {
@@ -34,13 +36,17 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'mvn -s settings.xml test'
+                catchError {
+                    sh 'mvn -s settings.xml test'
+                }
             }
         }
 
         stage('Checkstyle Analysis') {
             steps {
-                sh 'mvn -s settings.xml checkstyle:checkstyle'
+                catchError {
+                    sh 'mvn -s settings.xml checkstyle:checkstyle'
+                }
             }
         }
 
@@ -49,16 +55,18 @@ pipeline {
                 scannerHome = tool "${SONARSCANNER}"
             }
             steps {
-                withSonarQubeEnv("${SONARSERVER}") {
-                    sh """${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=CI-Jenkins-As-A-Code-Groovy \
-                        -Dsonar.projectName=CI-Jenkins-As-A-Code-Groovy \
-                        -Dsonar.projectVersion=1.0 \
-                        -Dsonar.sources=src/ \
-                        -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                        -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                        -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                        -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml"""
+                catchError {
+                    withSonarQubeEnv("${SONARSERVER}") {
+                        sh """${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=CI-Jenkins-As-A-Code-Groovy \
+                            -Dsonar.projectName=CI-Jenkins-As-A-Code-Groovy \
+                            -Dsonar.projectVersion=1.0 \
+                            -Dsonar.sources=src/ \
+                            -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+                            -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                            -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml"""
+                    }
                 }
             }
         }
