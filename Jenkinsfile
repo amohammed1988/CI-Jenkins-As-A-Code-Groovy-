@@ -47,7 +47,7 @@ pipeline {
 
         stage('Sonar Analysis') {
     environment {
-        scannerHome = tool name: "${SONARSCANNER}", type: 'hudson.plugins.sonar.MsBuildSonarRunnerInstallation'
+        scannerHome = tool name: "${SONARSCANNER}"
     }
     steps {
         withSonarQubeEnv("${SONARSERVER}") {
