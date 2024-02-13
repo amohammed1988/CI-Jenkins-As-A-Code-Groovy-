@@ -84,7 +84,7 @@ pipeline {
                   repository: "${RELEASE_REPO}",
                   credentialsId: "${NEXUS_LOGIN}",
                   artifacts: [
-                    [artifactId: 'vproapp',
+                    [artifactId: 'CI-Jenkins-As-A-Code-Groovy-',
                      classifier: '',
                      file: 'target/vprofile-v2.war',
                      type: 'war']
