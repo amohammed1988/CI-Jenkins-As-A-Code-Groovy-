@@ -46,21 +46,20 @@ pipeline {
         }
 
          stage('Sonar Analysis') {
-            environment {
-                scannerHome = tool "${SONARSCANNER}"
-            }
-            steps {
-               withSonarQubeEnv("${SONARSERVER}") {
-                   sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=CI-Jenkins-As-A-Code-Groovy- \
-                   -Dsonar.projectName=CI-Jenkins-As-A-Code-Groovy- \
-                   -Dsonar.projectVersion=1.0 \
-                   -Dsonar.sources=src/ \
-                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
-              }
-            }
+    environment {
+        scannerHome = tool name: "${SONARSCANNER}", type: 'hudson.plugins.sonar.MsBuildSonarRunnerInstallation'
+    }
+    steps {
+        withSonarQubeEnv("${SONARSERVER}") {
+            sh """${scannerHome}/bin/sonar-scanner \
+                -Dsonar.projectKey=CI-Jenkins-As-A-Code-Groovy- \
+                -Dsonar.projectName=CI-Jenkins-As-A-Code-Groovy- \
+                -Dsonar.projectVersion=1.0 \
+                -Dsonar.sources=src/ \
+                -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+                -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                -Dsonar.jacoco.reportPaths=target/jacoco.exec \
+                -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml"""
         }
     }
 }
